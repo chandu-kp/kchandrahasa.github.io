@@ -2,10 +2,10 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://kchandrahasa.github.io
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+url: http://blog.kchandrahasa.com
+title: Chandrahasa
+subtitle: software development professional
+author: Chandrahasa
 simple_search: http://google.com/search
 description:
 
