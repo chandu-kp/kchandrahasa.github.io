@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
-  <link href="http://kchandrahasa.github.io/atom.xml" rel="self"/>
-  <link href="http://kchandrahasa.github.io/"/>
-  <updated>2013-06-19T07:59:13-04:00</updated>
-  <id>http://kchandrahasa.github.io/</id>
+  <title><![CDATA[Chandrahasa]]></title>
+  <link href="http://blog.kchandrahasa.com/atom.xml" rel="self"/>
+  <link href="http://blog.kchandrahasa.com/"/>
+  <updated>2013-06-19T08:18:13-04:00</updated>
+  <id>http://blog.kchandrahasa.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Chandrahasa]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Github Hosted Blog with Octopress in Cloud9]]></title>
-    <link href="http://kchandrahasa.github.io/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9/"/>
+    <link href="http://blog.kchandrahasa.com/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9/"/>
     <updated>2013-06-19T06:58:00-04:00</updated>
-    <id>http://kchandrahasa.github.io/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9</id>
+    <id>http://blog.kchandrahasa.com/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9</id>
     <content type="html"><![CDATA[
 ]]></content>
   </entry>
