@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: octopress | Chandrahasa]]></title>
+  <link href="http://blog.kchandrahasa.com/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://blog.kchandrahasa.com/"/>
+  <updated>2013-07-08T05:59:47-04:00</updated>
+  <id>http://blog.kchandrahasa.com/</id>
+  <author>
+    <name><![CDATA[Chandra]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Github Hosted Blog with Octopress in Cloud9]]></title>
+    <link href="http://blog.kchandrahasa.com/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9/"/>
+    <updated>2013-06-19T06:58:00-04:00</updated>
+    <id>http://blog.kchandrahasa.com/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9</id>
+    <content type="html"><![CDATA[<p>I was looking for blogging framework, there were many choices like <a href="http://tumblr.com/">Tumblr</a>, <a href="http://wordpress.com">Wordpress</a> etc. But when I came across Octopress, I really liked it. I can just write posts in markdown syntax and host it easily in Github.</p>
+
+<blockquote><p><a href="http://octopress.org/">Octopress</a>  is a blogging framework for Jekyl, which isa static site generator powering Github Pages.</p></blockquote>
+
+<p>Writing blog using Octopress and hosting it in Github Pages, requires the following:</p>
+
+<ul>
+<li>Ruby 1.9.3</li>
+<li>Git &ndash; a distributed version control system</li>
+<li>Account in <a href="https://github.com">Github</a></li>
+</ul>
+
+
+<p>But having these environment in my local system was not an option, as I wanted to blog from anywhere. This is where Cloud9 helped me.</p>
+
+<blockquote><p><a href="http://c9.io/">Cloud9</a> is an online IDE where Ruby, Git are pre-installed.</p></blockquote>
+
+<p>So, once you sign up for an account with Cloud 9, all you need is to create an workspace. In free edition, you can have one private workspace.</p>
+
+<p>Now, go to your workspace, and follow the steps as outlined below in the terminal window
+<code>
+git clone git://github.com/imathis/octopress.git myblog
+</code></p>
+
+<blockquote><p>This creates a directory called myblog and copies all the related data from octopress.</p></blockquote>
+
+<p>Now goto the octopress directory and issue the following commands
+<code>
+cd myblog
+bundle install
+rake install
+</code></p>
+
+<blockquote><p>This will install the default theme. Check _config.yml and update all details like blog name, blog address, twitter id, disqus id etc</p></blockquote>
+
+<p>Next step is to generate the blog and preview it.
+<code>
+rake generate
+rake preview
+</code></p>
+
+<p>Preview within Cloud9 may result in  Permission denied &ndash; bind(2) (Errno::EACCES). To resolve this issue, edit RakeFile and modify the following
+```
+&hellip;.                                                                                                                                                                               <br/>
+&hellip;.</p>
+
+<h1>server_port     = &ldquo;4000&rdquo;      # port for preview server eg. localhost:4000</h1>
+
+<p>server_host     = ENV[&lsquo;IP&rsquo;] ||= &lsquo;0.0.0.0&rsquo;     # server bind address for preview server                                                                                             <br/>
+server_port     = ENV[&lsquo;PORT&rsquo;] ||= &ldquo;4000&rdquo;      # port for preview server eg. localhost:4000                                                                                         <br/>
+&hellip;.                                                                                                                                                                               <br/>
+&hellip;.</p>
+
+<h1>rackupPid = Process.spawn(&ldquo;rackup &mdash;port #{server_port}&rdquo;)</h1>
+
+<p>rackupPid = Process.spawn(&ldquo;rackup &mdash;host #{server_host} &mdash;port #{server_port}&rdquo;)                                                                                                    <br/>
+```</p>
+
+<blockquote><p>Refer [<a href="http://www.devopsy.com/blog/2012/10/04/octopress-on-cloud9/">http://www.devopsy.com/blog/2012/10/04/octopress-on-cloud9/</a>] for more details</p></blockquote>
+
+<p>Now you can preview your blog on <code>&lt;blog_name&gt;.&lt;cloud 9 username&gt;.c9.io</code></p>
+
+<h3>Deploying to Github pages</h3>
+
+<p>Login to github.com and create a repo as <username>.github.io.
+Now on your cloud9 workspace, invoke
+<code>
+cd myblog
+rake setup_github_pages
+</code></p>
+
+<p>Enter repo url as:<code>git@github.com:&lt;github username&gt;/&lt;github username&gt;.github.io</code></p>
+
+<blockquote><p>Note: Make sure to add cloud9 ssh key into github. Cloud9 ssh key is avilable at your account settings, copy this ssh key and add it in Github account settings.</p></blockquote>
+
+<h3>Now generate the blog and deploy to github</h3>
+
+<p><code>
+rake generate
+rake deploy
+</code>
+Now you are done with deploying your blog onto Github and you can go to your blog at <code>http://&lt;github username&gt;.github.io</code>.</p>
+
+<h3>Commit the source</h3>
+
+<p>Now commit the source so that you don&rsquo;t loose any of the setup files and can checkout the code in someother system and start blogging.
+<code>
+git add .                                                                                                                                                                            
+git commit -m 'your message'                                                                        
+git push origin source                                                                                                                                                               
+</code></p>
+
+<h3>Creating new post</h3>
+
+<p><code>                                                                                                                                                                                 
+rake new_post["My new blog"]                                                                                                                                                         
+</code>
+This will generate a file in the source_posts folder which you can edit.</p>
+
+<p>To generate your blog and deploy it, follow the same steps as outlined above.</p>
+]]></content>
+  </entry>
+  
+</feed>

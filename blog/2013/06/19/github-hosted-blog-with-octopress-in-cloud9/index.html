@@ -6,11 +6,10 @@
 <head>
   <meta charset="utf-8">
   <title>Github Hosted Blog with Octopress in Cloud9 - Chandrahasa</title>
-  <meta name="author" content="Chandrahasa">
+  <meta name="author" content="Chandra">
 
   
-  <meta name="description" content="
-">
+  <meta name="description" content="I was looking for blogging framework, there were many choices like Tumblr, Wordpress etc. But when I came across Octopress, I really liked it. I can &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -32,6 +31,18 @@
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42301455-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
@@ -98,12 +109,134 @@
 
 <time datetime="2013-06-19T06:58:00-04:00" pubdate data-updated="true">Jun 19<span>th</span>, 2013</time>
         
+         | <a href="#disqus_thread">Comments</a>
+        
       </p>
     
   </header>
 
 
-<div class="entry-content">
+<div class="entry-content"><p>I was looking for blogging framework, there were many choices like <a href="http://tumblr.com/">Tumblr</a>, <a href="http://wordpress.com">Wordpress</a> etc. But when I came across Octopress, I really liked it. I can just write posts in markdown syntax and host it easily in Github.</p>
+
+<blockquote><p><a href="http://octopress.org/">Octopress</a>  is a blogging framework for Jekyl, which isa static site generator powering Github Pages.</p></blockquote>
+
+<p>Writing blog using Octopress and hosting it in Github Pages, requires the following:</p>
+
+<ul>
+<li>Ruby 1.9.3</li>
+<li>Git &ndash; a distributed version control system</li>
+<li>Account in <a href="https://github.com">Github</a></li>
+</ul>
+
+
+<p>But having these environment in my local system was not an option, as I wanted to blog from anywhere. This is where Cloud9 helped me.</p>
+
+<blockquote><p><a href="http://c9.io/">Cloud9</a> is an online IDE where Ruby, Git are pre-installed.</p></blockquote>
+
+<p>So, once you sign up for an account with Cloud 9, all you need is to create an workspace. In free edition, you can have one private workspace.</p>
+
+<p>Now, go to your workspace, and follow the steps as outlined below in the terminal window</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git myblog</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>This creates a directory called myblog and copies all the related data from octopress.</p></blockquote>
+
+<p>Now goto the octopress directory and issue the following commands</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd myblog
+</span><span class='line'>bundle install
+</span><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>This will install the default theme. Check _config.yml and update all details like blog name, blog address, twitter id, disqus id etc</p></blockquote>
+
+<p>Next step is to generate the blog and preview it.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
+</span><span class='line'>rake preview</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Preview within Cloud9 may result in  Permission denied &ndash; bind(2) (Errno::EACCES). To resolve this issue, edit RakeFile and modify the following</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>....                                                                                                                                                                                 
+</span><span class='line'>....                                                                                                                                                                                 
+</span><span class='line'>
+</span><span class='line'>#server_port     = "4000"      # port for preview server eg. localhost:4000                                                                                                          
+</span><span class='line'>server_host     = ENV['IP'] ||= '0.0.0.0'     # server bind address for preview server                                                                                               
+</span><span class='line'>server_port     = ENV['PORT'] ||= "4000"      # port for preview server eg. localhost:4000                                                                                           
+</span><span class='line'>....                                                                                                                                                                                 
+</span><span class='line'>....                                                                                                                                                                                 
+</span><span class='line'>#rackupPid = Process.spawn("rackup --port #{server_port}")                                                                                                                           
+</span><span class='line'>rackupPid = Process.spawn("rackup --host #{server_host} --port #{server_port}")                                                                                                      </span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>Refer [<a href="http://www.devopsy.com/blog/2012/10/04/octopress-on-cloud9/">http://www.devopsy.com/blog/2012/10/04/octopress-on-cloud9/</a>] for more details</p></blockquote>
+
+<p>Now you can preview your blog on <code>&lt;blog_name&gt;.&lt;cloud 9 username&gt;.c9.io</code></p>
+
+<h3>Deploying to Github pages</h3>
+
+<p>Login to github.com and create a repo as <username>.github.io.
+Now on your cloud9 workspace, invoke</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd myblog
+</span><span class='line'>rake setup_github_pages</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enter repo url as:<code>git@github.com:&lt;github username&gt;/&lt;github username&gt;.github.io</code></p>
+
+<blockquote><p>Note: Make sure to add cloud9 ssh key into github. Cloud9 ssh key is avilable at your account settings, copy this ssh key and add it in Github account settings.</p></blockquote>
+
+<h3>Now generate the blog and deploy to github</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
+</span><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you are done with deploying your blog onto Github and you can go to your blog at <code>http://&lt;github username&gt;.github.io</code>.</p>
+
+<h3>Commit the source</h3>
+
+<p>Now commit the source so that you don&rsquo;t loose any of the setup files and can checkout the code in someother system and start blogging.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git add .                                                                                                                                                                            
+</span><span class='line'>git commit -m 'your message'                                                                        
+</span><span class='line'>git push origin source                                                                                                                                                               </span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Creating new post</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_post["My new blog"]                                                                                                                                                         </span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will generate a file in the source_posts folder which you can edit.</p>
+
+<p>To generate your blog and deploy it, follow the same steps as outlined above.</p>
 </div>
 
 
@@ -112,7 +245,7 @@
       
   
 
-<span class="byline author vcard">Posted by <span class="fn">Chandrahasa</span></span>
+<span class="byline author vcard">Posted by <span class="fn">Chandra</span></span>
 
       
 
@@ -128,6 +261,12 @@
 
 <time datetime="2013-06-19T06:58:00-04:00" pubdate data-updated="true">Jun 19<span>th</span>, 2013</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cloud9/'>cloud9</a>, <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/octopress/'>octopress</a>
+  
+</span>
 
 
     </p>
@@ -147,6 +286,12 @@
     </p>
   </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -203,12 +348,28 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Chandrahasa -
+  Copyright &copy; 2013 - Chandra -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'kchandrahasa';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.kchandrahasa.com/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9/';
+        var disqus_url = 'http://blog.kchandrahasa.com/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 
