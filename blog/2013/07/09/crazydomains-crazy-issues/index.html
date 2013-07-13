@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: octopress - Chandrahasa</title>
+  <title>Crazydomains - crazy issues - Chandrahasa</title>
   <meta name="author" content="Chandra">
 
   
-  <meta name="description" content="Category: octopress">
+  <meta name="description" content="I purchased domain name from crazydomains, mainly to host my blog, because the domain name was cheaper at crazydomains. But little did I know that I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.kchandrahasa.comblog/categories/octopress/">
+  <link rel="canonical" href="http://blog.kchandrahasa.com/blog/2013/07/09/crazydomains-crazy-issues/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -85,36 +85,148 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Octopress</h1>
+    
+      
+        <h1 class="entry-title">Crazydomains - Crazy Issues</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-09T06:37:00-04:00" pubdate data-updated="true">Jul 9<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>I purchased domain name from crazydomains, mainly to host my blog, because the domain name was cheaper at crazydomains. But little did I know that I will not be able to update my DNS records, unless I pay more for it. Creating a CNAME record seem to be pretty basic service, but alas crazydomains will not give you. Now I know why they named themselves as crazydomains.</p>
 
-  
-  <h2>2013</h2>
+<p>Now let us look at what needs to be done for custom domain setup.</p>
 
-<article>
-  
-<h1><a href="/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9/">Github Hosted Blog with Octopress in Cloud9</a></h1>
-<time datetime="2013-06-19T06:58:00-04:00" pubdate><span class='month'>Jun</span> <span class='day'>19</span> <span class='year'>2013</span></time>
+<ol>
+<li>Create a CNAME file under source folder :
+<code>
+echo 'your-domain.com' &gt;&gt; source/CNAME
+</code></li>
+<li>Create a CNAME record for sub-domains (A record for domain) under DNS settings.
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/cloud9/'>cloud9</a>, <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/octopress/'>octopress</a></span>
-</footer>
+<blockquote><p>Ref: <a href="http://octopress.org/docs/deploying/github/#custom_domains">Deploying to Github Pages</a></p></blockquote></li>
+</ol>
 
 
-</article>
+<p>Now, since I could not create CNAME, I was looking for other options. Luckily there are some options available, like:</p>
 
+<ul>
+<li><a href="http://freedns.afraid.org/">FreeDNS</a></li>
+<li><a href="http://www.cloudns.net/">ClouDNS</a></li>
+<li><a href="https://www.cloudflare.com/">Cloudflare</a></li>
+</ul>
+
+
+<p>Of the above I have tried only Cloudflare. Cloudflare basically a website optimizer mainly routes the traffic via their network. So, its double benefit.</p>
+
+<ul>
+<li>Create an account in Cloudflare</li>
+<li>Once you login, you will have to add your domain name.</li>
+<li>It will scan your DNS settings, adds all the missing records if any (like for www etc)</li>
+<li>Now add a new CNAME as follows:
+<code>&lt;your sub-domain name&gt;</code> and its alias name, which is <code>&lt;github user&gt;.github.io</code> as shown below.</li>
+</ul>
+
+
+<p><img class="center" src="/images/cloudflare-dns_settings.jpg" width="650" height="350" title="image" alt="images"></p>
+
+<ul>
+<li>Once done, click on <em>I&rsquo;m done entering my DNS Records</em>.</li>
+<li>Now Cloudflare will provide you two nameservers (it could be different for different accounts)</li>
+</ul>
+
+
+<p>Now login to crazydomains,</p>
+
+<ul>
+<li>Click on Domains and click <em>Update Name Servers</em> under DNS settings.</li>
+<li>Delete the existing crazy domains name servers and enter the two nameservers given by cloudflare as follows:.</li>
+</ul>
+
+
+<p><img class="center" src="/images/crazydomain-dns_settings.jpg" width="650" height="350" title="image" alt="images"></p>
+
+<p>That&rsquo;s it. It may take an 10 &ndash; 20 minutes. Now you can go to your subdomain and see that its pulling content off your github page.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Chandra</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-09T06:37:00-04:00" pubdate data-updated="true">Jul 9<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cloudfare/'>cloudfare</a>, <a class='category' href='/blog/categories/crazydomains/'>crazydomains</a>, <a class='category' href='/blog/categories/custom/'>custom</a>, <a class='category' href='/blog/categories/domain/'>domain</a>, <a class='category' href='/blog/categories/github/'>github</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.kchandrahasa.com/blog/2013/07/09/crazydomains-crazy-issues/" data-via="kchandrahasa" data-counturl="http://blog.kchandrahasa.com/blog/2013/07/09/crazydomains-crazy-issues/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9/" title="Previous Post: Github Hosted Blog with Octopress in Cloud9">&laquo; Github Hosted Blog with Octopress in Cloud9</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -186,7 +298,10 @@
       var disqus_shortname = 'kchandrahasa';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.kchandrahasa.com/blog/2013/07/09/crazydomains-crazy-issues/';
+        var disqus_url = 'http://blog.kchandrahasa.com/blog/2013/07/09/crazydomains-crazy-issues/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

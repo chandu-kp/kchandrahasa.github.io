@@ -9,7 +9,7 @@
   <meta name="author" content="Chandra">
 
   
-  <meta name="description" content="I was looking for blogging framework, there were many choices like Tumblr, Wordpress etc. But when I came across Octopress, I really liked it. I can &hellip;">
+  <meta name="description" content="I purchased domain name from crazydomains, mainly to host my blog, because the domain name was cheaper at crazydomains. But little did I know that I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,99 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/2013/07/09/crazydomains-crazy-issues/">Crazydomains - Crazy Issues</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-09T06:37:00-04:00" pubdate data-updated="true">Jul 9<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/07/09/crazydomains-crazy-issues/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I purchased domain name from crazydomains, mainly to host my blog, because the domain name was cheaper at crazydomains. But little did I know that I will not be able to update my DNS records, unless I pay more for it. Creating a CNAME record seem to be pretty basic service, but alas crazydomains will not give you. Now I know why they named themselves as crazydomains.</p>
+
+<p>Now let us look at what needs to be done for custom domain setup.</p>
+
+<ol>
+<li>Create a CNAME file under source folder :
+<code>
+echo 'your-domain.com' &gt;&gt; source/CNAME
+</code></li>
+<li>Create a CNAME record for sub-domains (A record for domain) under DNS settings.
+
+<blockquote><p>Ref: <a href="http://octopress.org/docs/deploying/github/#custom_domains">Deploying to Github Pages</a></p></blockquote></li>
+</ol>
+
+
+<p>Now, since I could not create CNAME, I was looking for other options. Luckily there are some options available, like:</p>
+
+<ul>
+<li><a href="http://freedns.afraid.org/">FreeDNS</a></li>
+<li><a href="http://www.cloudns.net/">ClouDNS</a></li>
+<li><a href="https://www.cloudflare.com/">Cloudflare</a></li>
+</ul>
+
+
+<p>Of the above I have tried only Cloudflare. Cloudflare basically a website optimizer mainly routes the traffic via their network. So, its double benefit.</p>
+
+<ul>
+<li>Create an account in Cloudflare</li>
+<li>Once you login, you will have to add your domain name.</li>
+<li>It will scan your DNS settings, adds all the missing records if any (like for www etc)</li>
+<li>Now add a new CNAME as follows:
+<code>&lt;your sub-domain name&gt;</code> and its alias name, which is <code>&lt;github user&gt;.github.io</code> as shown below.</li>
+</ul>
+
+
+<p><img class="center" src="/images/cloudflare-dns_settings.jpg" width="650" height="350" title="image" alt="images"></p>
+
+<ul>
+<li>Once done, click on <em>I&rsquo;m done entering my DNS Records</em>.</li>
+<li>Now Cloudflare will provide you two nameservers (it could be different for different accounts)</li>
+</ul>
+
+
+<p>Now login to crazydomains,</p>
+
+<ul>
+<li>Click on Domains and click <em>Update Name Servers</em> under DNS settings.</li>
+<li>Delete the existing crazy domains name servers and enter the two nameservers given by cloudflare as follows:.</li>
+</ul>
+
+
+<p><img class="center" src="/images/crazydomain-dns_settings.jpg" width="650" height="350" title="image" alt="images"></p>
+
+<p>That&rsquo;s it. It may take an 10 &ndash; 20 minutes. Now you can go to your subdomain and see that its pulling content off your github page.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -258,6 +351,10 @@ Now on your cloud9 workspace, invoke</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/09/crazydomains-crazy-issues/">Crazydomains - crazy issues</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9/">Github Hosted Blog with Octopress in Cloud9</a>
