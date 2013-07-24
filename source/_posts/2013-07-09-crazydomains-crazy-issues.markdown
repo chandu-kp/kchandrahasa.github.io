@@ -9,7 +9,7 @@ categories: crazydomains cloudfare github custom domain
 I purchased domain name from crazydomains, mainly to host my blog, because the domain name was cheaper at crazydomains. But little did I know that I will not be able to update my DNS records, unless I pay more for it. Creating a CNAME record seem to be pretty basic service, but alas crazydomains will not give you. Now I know why they named themselves as crazydomains.
 
 Now let us look at what needs to be done for custom domain setup.
-
+<!--more-->
 1. Create a CNAME file under source folder : 
 `
   echo 'your-domain.com' >> source/CNAME

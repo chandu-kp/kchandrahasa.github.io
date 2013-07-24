@@ -8,7 +8,7 @@ categories: octopress github cloud9
 ---
 I was looking for blogging framework, there were many choices like [Tumblr](http://tumblr.com/), [Wordpress](http://wordpress.com) etc. But when I came across Octopress, I really liked it. I can just write posts in markdown syntax and host it easily in Github.
 >[Octopress](http://octopress.org/)  is a blogging framework for Jekyl, which isa static site generator powering Github Pages.
-
+<!--more-->
 Writing blog using Octopress and hosting it in Github Pages, requires the following:
 
 - Ruby 1.9.3
