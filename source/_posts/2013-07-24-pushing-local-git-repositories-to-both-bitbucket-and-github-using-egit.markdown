@@ -56,8 +56,9 @@ Create repository in Bitbucket and note down the repository url which will be li
     {% img centre /images/eclipse-git-add-remote.jpg 650 350 'image' 'images' %}
     - Click `Advanced` to specify `Push Ref Specifications`
     > You will get an warning message **Known Hosts doesn't exist, do u want to create it**. Click `Yes`.
-    - In `Push Ref Specification` dialog box, click `Add All Brannches to Spec` and click `Finish`
-    - Click `Save and Push`
+    - In `Push Ref Specification` dialog box, click `Add All Brannches to Spec`. You may get warning message like the following. Just click `Yes`.
+    {% img centre /images/eclipse-git-add-remote-warning.jpg 650 350 'image' 'images' %}
+    - Click `Finish` and Click `Save and Push`
 
 Now your local repository is pushed to Bitbucket.
 
