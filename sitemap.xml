@@ -4,17 +4,23 @@
         <loc>
             http://blog.kchandrahasa.com/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9/
         </loc>
-        <lastmod>2013-07-08T05:26:41-04:00</lastmod>
+        <lastmod>2013-07-24T02:56:38-04:00</lastmod>
     </url>
     <url>
         <loc>http://blog.kchandrahasa.com/blog/2013/07/09/crazydomains-crazy-issues/</loc>
-        <lastmod>2013-07-13T02:38:22-04:00</lastmod>
+        <lastmod>2013-07-24T02:56:08-04:00</lastmod>
     </url>
     <url>
         <loc>
             http://blog.kchandrahasa.com/blog/2013/07/16/configuring-tomcat-catalina-log-rotation/
         </loc>
-        <lastmod>2013-07-16T02:04:46-04:00</lastmod>
+        <lastmod>2013-07-24T02:56:20-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://blog.kchandrahasa.com/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/
+        </loc>
+        <lastmod>2013-07-24T06:23:41-04:00</lastmod>
     </url>
     <url>
         <loc>http://blog.kchandrahasa.com/robots.txt</loc>
@@ -22,10 +28,10 @@
     </url>
     <url>
         <loc>http://blog.kchandrahasa.com/</loc>
-        <lastmod>2013-07-16T02:04:46-04:00</lastmod>
+        <lastmod>2013-07-24T06:23:41-04:00</lastmod>
     </url>
     <url>
         <loc>http://blog.kchandrahasa.com/blog/archives/</loc>
-        <lastmod>2013-07-16T02:04:46-04:00</lastmod>
+        <lastmod>2013-07-24T06:23:41-04:00</lastmod>
     </url>
 </urlset>

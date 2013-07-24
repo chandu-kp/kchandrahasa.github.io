@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cloud9 | Chandrahasa]]></title>
   <link href="http://blog.kchandrahasa.com/blog/categories/cloud9/atom.xml" rel="self"/>
   <link href="http://blog.kchandrahasa.com/"/>
-  <updated>2013-07-16T02:07:43-04:00</updated>
+  <updated>2013-07-24T06:25:22-04:00</updated>
   <id>http://blog.kchandrahasa.com/</id>
   <author>
     <name><![CDATA[Chandra]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<p>I was looking for blogging framework, there were many choices like <a href="http://tumblr.com/">Tumblr</a>, <a href="http://wordpress.com">Wordpress</a> etc. But when I came across Octopress, I really liked it. I can just write posts in markdown syntax and host it easily in Github.</p>
 
 <blockquote><p><a href="http://octopress.org/">Octopress</a>  is a blogging framework for Jekyl, which isa static site generator powering Github Pages.</p></blockquote>
+
+<!--more-->
+
 
 <p>Writing blog using Octopress and hosting it in Github Pages, requires the following:</p>
 

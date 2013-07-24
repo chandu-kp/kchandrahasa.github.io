@@ -4,7 +4,7 @@
   <title><![CDATA[Category: catalina | Chandrahasa]]></title>
   <link href="http://blog.kchandrahasa.com/blog/categories/catalina/atom.xml" rel="self"/>
   <link href="http://blog.kchandrahasa.com/"/>
-  <updated>2013-07-16T02:07:43-04:00</updated>
+  <updated>2013-07-24T06:25:22-04:00</updated>
   <id>http://blog.kchandrahasa.com/</id>
   <author>
     <name><![CDATA[Chandra]]></name>
@@ -26,6 +26,9 @@
 <li>catalina.out : all sysout and syserr goes into this log along with the bootstrap logs from when you start/stop Tomcat</li>
 <li>catalina.YYYY-MM-DD.log : This, as you can see, a daily rotating file with all sysout, syserr logs.</li>
 </ul>
+
+
+<!--more-->
 
 
 <h2>Problem with catalina.out</h2>

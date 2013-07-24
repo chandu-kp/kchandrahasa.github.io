@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: bitbucket | Chandrahasa]]></title>
+  <link href="http://blog.kchandrahasa.com/blog/categories/bitbucket/atom.xml" rel="self"/>
+  <link href="http://blog.kchandrahasa.com/"/>
+  <updated>2013-07-24T06:25:22-04:00</updated>
+  <id>http://blog.kchandrahasa.com/</id>
+  <author>
+    <name><![CDATA[Chandra]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Pushing Local git Repositories to both Bitbucket and Github using EGit]]></title>
+    <link href="http://blog.kchandrahasa.com/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/"/>
+    <updated>2013-07-24T00:46:00-04:00</updated>
+    <id>http://blog.kchandrahasa.com/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit</id>
+    <content type="html"><![CDATA[<p>This assumes that you have Eclipse with Egit already installed. If you are using the latest release of Eclipse (i.e, 4.3 &ndash; Kepler), then Egit is already installed in it. Otherwise install EGit as detailed in <a href="http://www.eclipse.org/egit/download/">EGit Download</a></p>
+
+<blockquote><p>Egit is Eclipse plugin working on top of JGit which is Java implementation of git. So, you don&rsquo;t need to install git separately.</p></blockquote>
+
+<!--more-->
+
+
+<h3>Create local repository</h3>
+
+<ul>
+<li><p>Create <code>HOME</code> environment varibale and set to a directory where you want to keep all git repos. Ideally keep this directory outside of Eclipse workspace for performance reason. Click <a href="http://wiki.eclipse.org/EGit/User_Guide#Considerations_for_Git_Repositories_to_be_used_in_Eclipse">here</a> for details.</p></li>
+<li><p>Now within Eclipse create a Java Project (or any project)</p></li>
+<li>Right click on the project, click <code>Team -&gt; Share Project</code></li>
+<li>Select <code>Git</code> as repository type and click <code>Next</code></li>
+<li>In next screen, <code>Configure Git Repository</code>, click on <code>Create</code> against repository and enter name for your repository. You will notice that the <code>Parent Directory</code> is set to <code>HOME</code> directory.
+
+<blockquote><p>In case you haven&rsquo;t set the <code>HOME</code> environment variable, then <code>Parent Directory</code> will be set to default <code>user</code> home which can be modified in Eclipse preferences (<code>Windows-&gt;Preferences-&gt;Team-&gt;Git</code>).</p></blockquote></li>
+<li>Now that you have created the repository, you can add the project to git as follows:
+
+<ul>
+<li>Right click on the project, click <code>Team -&gt; Add To Index</code></li>
+</ul>
+</li>
+<li>Now commit to git as follows:
+
+<ul>
+<li>Right click on the project, click <code>Team -&gt; Commit</code></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Now your project is added to local git repository.</p>
+
+<h3>Pushing to Bitbucket</h3>
+
+<p>In order to push to Bitbucket, you can use SSH or HTTPS. Using HTTPS, you will need to enter username/password to push the changes. Here, I will explain how to use SSH.</p>
+
+<h5>Generate public and private keys in Eclipse</h5>
+
+<p>  Public and private key pair together identifies the local system. In order generate these, goto, <code>Windows-&gt;Preferences-&gt;General-&gt;Network Connections-&gt;SSH2-&gt;Key Management</code> and click on <code>Generate DSA Key</code> and then click on <code>Save Private Key</code>. Copy the public key to notepad.
+<img class="center" src="/images/eclipse-git-generate-ssh-key.jpg" width="650" height="350" title="&lsquo;image&rsquo; &lsquo;images&rsquo;" ></p>
+
+<h5>Add public key in Bitbucket</h5>
+
+<p>Now login to <a href="https://bitbucket.org">Bitbucket</a>, add the above public key under <code>Account-&gt; SSH Keys</code></p>
+
+<h5>Create a repository in Bitbucket</h5>
+
+<p>Create repository in Bitbucket and note down the repository url which will be like : <code>git@bitbucket.org:&lt;bb user name&gt;/&lt;repository name&gt;.git</code></p>
+
+<p><img class="centre" src="/images/bitbucket-new-repo.jpg" width="650" height="350" title="&lsquo;image&rsquo; &lsquo;images&rsquo;" ></p>
+
+<h5>Add remote in Eclipse</h5>
+
+<ul>
+<li>In Eclipse open <code>Git Repositories</code> view as follows:
+<code>Window &gt; Show View &gt; Other &gt; Git &gt; Git Repositories</code></li>
+<li>Right click on <code>Remotes</code> and click <code>Create Remote</code>. Enter remote name and click <code>OK</code> (Select <code>Configure push</code>)</li>
+<li>In <code>Configure Push</code> screen, click <code>Change</code> and configure git repository as follows:
+
+<ul>
+<li>URI: <code>git@bitbucket.org:&lt;bb user name&gt;/&lt;repository name&gt;.git</code></li>
+<li>Host: <code>bitbucket.org</code></li>
+<li>Repository Path: <code>&lt;bb user name&gt;/&lt;repository name&gt;.git</code></li>
+<li>Protocol: Select <code>ssh</code> and click <code>Finish</code>
+<img class="centre" src="/images/eclipse-git-add-remote.jpg" width="650" height="350" title="&lsquo;image&rsquo; &lsquo;images&rsquo;" ></li>
+<li>Click <code>Advanced</code> to specify <code>Push Ref Specifications</code>
+
+<blockquote><p>You will get an warning message <strong>Known Hosts doesn&rsquo;t exist, do u want to create it</strong>. Click <code>Yes</code>.</p></blockquote></li>
+<li>In <code>Push Ref Specification</code> dialog box, click <code>Add All Brannches to Spec</code> and click <code>Finish</code></li>
+<li>Click <code>Save and Push</code></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Now your local repository is pushed to Bitbucket.</p>
+
+<h3>Pushing to Github</h3>
+
+<h5>Add public key in Github</h5>
+
+<p>Login to <a href="https://github.com/">Github</a> and add the above public key under <code>Account Settings-&gt; SSH Keys</code></p>
+
+<h5>Create a repository in Github</h5>
+
+<p>Create repository in Github and note down the repository url which will be like : <code>git@github.com:&lt;github user name&gt;/&lt;repository name&gt;.git</code></p>
+
+<p><img class="centre" src="/images/github-new-repo.jpg" width="650" height="350" title="&lsquo;image&rsquo; &lsquo;images&rsquo;" >
+<img class="centre" src="/images/github-new-repo-url.jpg" width="650" height="350" title="&lsquo;image&rsquo; &lsquo;images&rsquo;" ></p>
+
+<h5>Add remote in Eclipse</h5>
+
+<p>Follow the same step as outlined above, by giving a distinct remote name and github repository url.</p>
+
+<p>Now you are ready with local git repository and remote git repositories at Github and Bitbucket. Similarly you should be able to add other remotes if required.</p>
+
+<h3>Adding/Modifying files and pushing it</h3>
+
+<ul>
+<li>Go to <em>Java perspective</em> and create a new package and a new Java class</li>
+<li>Add the newly added files to local git as follows:
+
+<ul>
+<li>Right click on the <code>project</code>, select <code>Team-&gt;Add to Index</code></li>
+<li>Right click on the <code>project</code>, select <code>Team-&gt;Commit</code>.</li>
+</ul>
+</li>
+<li>Now come to <code>Git Repositories</code> view
+
+<ul>
+<li>Expand <code>Remotes</code> and right click on remote name (created earlier) and click on <code>push</code>. Follow the same with other remotes.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Some helpful references:</p>
+
+<ul>
+<li><a href="http://wiki.eclipse.org/EGit/User_Guide">EGit/User Guide</a></li>
+<li><a href="http://www.slideshare.net/jlsantoso/some-instructions-to-use-git-with-eclipse">Some instructions to use Git with Eclipse</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

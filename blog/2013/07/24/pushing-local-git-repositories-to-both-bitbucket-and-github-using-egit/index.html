@@ -1,0 +1,413 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Pushing Local git Repositories to both Bitbucket and Github using EGit - Chandrahasa</title>
+  <meta name="author" content="Chandra">
+
+  
+  <meta name="description" content="This assumes that you have Eclipse with Egit already installed. If you are using the latest release of Eclipse (i.e, 4.3 &ndash; Kepler), then Egit &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.kchandrahasa.com/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Chandrahasa" type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42301455-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <!--
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">mob</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+   -->
+  <h1><a href="/">Chandrahasa</a></h1>
+  
+    <h2>  software development professional</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.kchandrahasa.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Pushing Local Git Repositories to Both Bitbucket and Github Using EGit</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-24T00:46:00-04:00" pubdate data-updated="true">Jul 24<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This assumes that you have Eclipse with Egit already installed. If you are using the latest release of Eclipse (i.e, 4.3 &ndash; Kepler), then Egit is already installed in it. Otherwise install EGit as detailed in <a href="http://www.eclipse.org/egit/download/">EGit Download</a></p>
+
+<blockquote><p>Egit is Eclipse plugin working on top of JGit which is Java implementation of git. So, you don&rsquo;t need to install git separately.</p></blockquote>
+
+<!--more-->
+
+
+<h3>Create local repository</h3>
+
+<ul>
+<li><p>Create <code>HOME</code> environment varibale and set to a directory where you want to keep all git repos. Ideally keep this directory outside of Eclipse workspace for performance reason. Click <a href="http://wiki.eclipse.org/EGit/User_Guide#Considerations_for_Git_Repositories_to_be_used_in_Eclipse">here</a> for details.</p></li>
+<li><p>Now within Eclipse create a Java Project (or any project)</p></li>
+<li>Right click on the project, click <code>Team -&gt; Share Project</code></li>
+<li>Select <code>Git</code> as repository type and click <code>Next</code></li>
+<li>In next screen, <code>Configure Git Repository</code>, click on <code>Create</code> against repository and enter name for your repository. You will notice that the <code>Parent Directory</code> is set to <code>HOME</code> directory.
+
+<blockquote><p>In case you haven&rsquo;t set the <code>HOME</code> environment variable, then <code>Parent Directory</code> will be set to default <code>user</code> home which can be modified in Eclipse preferences (<code>Windows-&gt;Preferences-&gt;Team-&gt;Git</code>).</p></blockquote></li>
+<li>Now that you have created the repository, you can add the project to git as follows:
+
+<ul>
+<li>Right click on the project, click <code>Team -&gt; Add To Index</code></li>
+</ul>
+</li>
+<li>Now commit to git as follows:
+
+<ul>
+<li>Right click on the project, click <code>Team -&gt; Commit</code></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Now your project is added to local git repository.</p>
+
+<h3>Pushing to Bitbucket</h3>
+
+<p>In order to push to Bitbucket, you can use SSH or HTTPS. Using HTTPS, you will need to enter username/password to push the changes. Here, I will explain how to use SSH.</p>
+
+<h5>Generate public and private keys in Eclipse</h5>
+
+<p>  Public and private key pair together identifies the local system. In order generate these, goto, <code>Windows-&gt;Preferences-&gt;General-&gt;Network Connections-&gt;SSH2-&gt;Key Management</code> and click on <code>Generate DSA Key</code> and then click on <code>Save Private Key</code>. Copy the public key to notepad.
+<img class="center" src="/images/eclipse-git-generate-ssh-key.jpg" width="650" height="350" title="image" alt="images"></p>
+
+<h5>Add public key in Bitbucket</h5>
+
+<p>Now login to <a href="https://bitbucket.org">Bitbucket</a>, add the above public key under <code>Account-&gt; SSH Keys</code></p>
+
+<h5>Create a repository in Bitbucket</h5>
+
+<p>Create repository in Bitbucket and note down the repository url which will be like : <code>git@bitbucket.org:&lt;bb user name&gt;/&lt;repository name&gt;.git</code></p>
+
+<p><img class="centre" src="/images/bitbucket-new-repo.jpg" width="650" height="350" title="image" alt="images"></p>
+
+<h5>Add remote in Eclipse</h5>
+
+<ul>
+<li>In Eclipse open <code>Git Repositories</code> view as follows:
+<code>Window &gt; Show View &gt; Other &gt; Git &gt; Git Repositories</code></li>
+<li>Right click on <code>Remotes</code> and click <code>Create Remote</code>. Enter remote name and click <code>OK</code> (Select <code>Configure push</code>)</li>
+<li>In <code>Configure Push</code> screen, click <code>Change</code> and configure git repository as follows:
+
+<ul>
+<li>URI: <code>git@bitbucket.org:&lt;bb user name&gt;/&lt;repository name&gt;.git</code></li>
+<li>Host: <code>bitbucket.org</code></li>
+<li>Repository Path: <code>&lt;bb user name&gt;/&lt;repository name&gt;.git</code></li>
+<li>Protocol: Select <code>ssh</code> and click <code>Finish</code>
+<img class="centre" src="/images/eclipse-git-add-remote.jpg" width="650" height="350" title="image" alt="images"></li>
+<li>Click <code>Advanced</code> to specify <code>Push Ref Specifications</code>
+
+<blockquote><p>You will get an warning message <strong>Known Hosts doesn&rsquo;t exist, do u want to create it</strong>. Click <code>Yes</code>.</p></blockquote></li>
+<li>In <code>Push Ref Specification</code> dialog box, click <code>Add All Brannches to Spec</code> and click <code>Finish</code></li>
+<li>Click <code>Save and Push</code></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Now your local repository is pushed to Bitbucket.</p>
+
+<h3>Pushing to Github</h3>
+
+<h5>Add public key in Github</h5>
+
+<p>Login to <a href="https://github.com/">Github</a> and add the above public key under <code>Account Settings-&gt; SSH Keys</code></p>
+
+<h5>Create a repository in Github</h5>
+
+<p>Create repository in Github and note down the repository url which will be like : <code>git@github.com:&lt;github user name&gt;/&lt;repository name&gt;.git</code></p>
+
+<p><img class="centre" src="/images/github-new-repo.jpg" width="650" height="350" title="image" alt="images">
+<img class="centre" src="/images/github-new-repo-url.jpg" width="650" height="350" title="image" alt="images"></p>
+
+<h5>Add remote in Eclipse</h5>
+
+<p>Follow the same step as outlined above, by giving a distinct remote name and github repository url.</p>
+
+<p>Now you are ready with local git repository and remote git repositories at Github and Bitbucket. Similarly you should be able to add other remotes if required.</p>
+
+<h3>Adding/Modifying files and pushing it</h3>
+
+<ul>
+<li>Go to <em>Java perspective</em> and create a new package and a new Java class</li>
+<li>Add the newly added files to local git as follows:
+
+<ul>
+<li>Right click on the <code>project</code>, select <code>Team-&gt;Add to Index</code></li>
+<li>Right click on the <code>project</code>, select <code>Team-&gt;Commit</code>.</li>
+</ul>
+</li>
+<li>Now come to <code>Git Repositories</code> view
+
+<ul>
+<li>Expand <code>Remotes</code> and right click on remote name (created earlier) and click on <code>push</code>. Follow the same with other remotes.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Some helpful references:</p>
+
+<ul>
+<li><a href="http://wiki.eclipse.org/EGit/User_Guide">EGit/User Guide</a></li>
+<li><a href="http://www.slideshare.net/jlsantoso/some-instructions-to-use-git-with-eclipse">Some instructions to use Git with Eclipse</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Chandra</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-24T00:46:00-04:00" pubdate data-updated="true">Jul 24<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bitbucket/'>bitbucket</a>, <a class='category' href='/blog/categories/egit/'>egit</a>, <a class='category' href='/blog/categories/git/'>git</a>, <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/push/'>push</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.kchandrahasa.com/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/" data-via="kchandrahasa" data-counturl="http://blog.kchandrahasa.com/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/2013/07/16/configuring-tomcat-catalina-log-rotation/" title="Previous Post: Configuring Tomcat Catalina Log Rotation">&laquo; Configuring Tomcat Catalina Log Rotation</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/">Pushing Local git Repositories to both Bitbucket and Github using EGit</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/16/configuring-tomcat-catalina-log-rotation/">Configuring Tomcat Catalina Log Rotation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/09/crazydomains-crazy-issues/">Crazydomains - crazy issues</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9/">Github Hosted Blog with Octopress in Cloud9</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/kchandrahasa">@kchandrahasa</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'kchandrahasa',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Chandra -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'kchandrahasa';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.kchandrahasa.com/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/';
+        var disqus_url = 'http://blog.kchandrahasa.com/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

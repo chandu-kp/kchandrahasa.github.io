@@ -9,7 +9,7 @@
   <meta name="author" content="Chandra">
 
   
-  <meta name="description" content="Tomcat uses Juli logging package for all system level logging by default. Tomcat 6.0 onwards Juli is basically a wrapper over java.util.logging. Here &hellip;">
+  <meta name="description" content="This assumes that you have Eclipse with Egit already installed. If you are using the latest release of Eclipse (i.e, 4.3 &ndash; Kepler), then Egit &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -93,6 +93,53 @@
   <header>
     
       <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/">Pushing Local Git Repositories to Both Bitbucket and Github Using EGit</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-24T00:46:00-04:00" pubdate data-updated="true">Jul 24<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This assumes that you have Eclipse with Egit already installed. If you are using the latest release of Eclipse (i.e, 4.3 &ndash; Kepler), then Egit is already installed in it. Otherwise install EGit as detailed in <a href="http://www.eclipse.org/egit/download/">EGit Download</a></p>
+
+<blockquote><p>Egit is Eclipse plugin working on top of JGit which is Java implementation of git. So, you don&rsquo;t need to install git separately.</p></blockquote>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
         <h1 class="entry-title"><a href="/blog/2013/07/16/configuring-tomcat-catalina-log-rotation/">Configuring Tomcat Catalina Log Rotation</a></h1>
       
     
@@ -129,55 +176,12 @@
 </ul>
 
 
-<h2>Problem with catalina.out</h2>
-
-<p><em>catalina.out</em> by default does not rotate. It can grow till you run out of space. This can potentially be issue if your webapp is logging to sysout, which ideally should not be the case and instead use its own logger preferably using log4j or using java.util.logging itself.</p>
-
-<p>But in some cases, you may be deploying someone else&rsquo;s the web application. So, you may need to either keep truncating catalina.out or turn off logging. Please note that truncating/deleting the catalina.out needs Tomcat restart to take effect.</p>
-
-<h4>The simplest way of turning off catalina.out is as follows:</h4>
-
-<ul>
-<li>go to <em>logging.properties</em> and modify as follows (either way)</li>
-</ul>
-
-
-<p>Turn off log level for <em>java.util.logging.ConsoleHandler</em></p>
-
-<div><script src='https://gist.github.com/6005716.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-<p>OR</p>
-
-<p>remove <em>java.util.logging.ConsoleHandler</em> altogether</p>
-
-<div><script src='https://gist.github.com/6005738.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-<blockquote><p>logging.properties is located in &lt;CATALINA_HOME>/conf or /etc/tomcat6</p></blockquote>
-
-<h2>Problem with daily log files</h2>
-
-<p>The daily log files, catalina.YYYY-MM-DD.log, rotate once a day by default. This again may cause issue depending on the web app, if the web app is receiving millions of request daily or its logging lots of logs. So, you may need to rotate this log as well to keep the size limit in check. Juli by do not have rotating capability other than daily rotation. Instead change the logging package from Juli to java.uitl.logging as follows in order to rotate the log.</p>
-
-<blockquote><p>In case you need to turn off this log as well, you can do so similar to catalina.out as mentioned above.</p></blockquote>
-
-<p>  <div><script src='https://gist.github.com/6005771.js'></script>
-<noscript><pre><code></code></pre></noscript></div></p>
-
-<h2>Why application log goes to catalina logs?</h2>
-
-<p>Even though you use logging framework, the log may still be going to catalina logs along with your own log files. This is mostly due to the way logger has been set up in that the log is added to console handler as well in addition to file handler. Anything that is added to console handler is redirected to catalina logs unless they are turned off as mentioned above.</p>
-
-<p>If you are using java.util.logging in your web application, then you can turn off logging to console handler using <code>logger.setUseParentHandlers(false);</code></p>
-
-<blockquote><p>For more details refer: <a href="http://stackoverflow.com/a/2533250/674446">http://stackoverflow.com/a/2533250/674446</a></p></blockquote>
-
-<p>If you are using log4j, make sure you do not have, <code>org.apache.log4j.ConsoleAppender</code> in log4j.properties, instead use only <code>org.apache.log4j.RollingFileAppender</code>.</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/07/16/configuring-tomcat-catalina-log-rotation/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -219,58 +223,12 @@
 
 <p>Now let us look at what needs to be done for custom domain setup.</p>
 
-<ol>
-<li>Create a CNAME file under source folder :
-<code>
-echo 'your-domain.com' &gt;&gt; source/CNAME
-</code></li>
-<li>Create a CNAME record for sub-domains (A record for domain) under DNS settings.
-
-<blockquote><p>Ref: <a href="http://octopress.org/docs/deploying/github/#custom_domains">Deploying to Github Pages</a></p></blockquote></li>
-</ol>
-
-
-<p>Now, since I could not create CNAME, I was looking for other options. Luckily there are some options available, like:</p>
-
-<ul>
-<li><a href="http://freedns.afraid.org/">FreeDNS</a></li>
-<li><a href="http://www.cloudns.net/">ClouDNS</a></li>
-<li><a href="https://www.cloudflare.com/">Cloudflare</a></li>
-</ul>
-
-
-<p>Of the above I have tried only Cloudflare. Cloudflare basically a website optimizer mainly routes the traffic via their network. So, its double benefit.</p>
-
-<ul>
-<li>Create an account in Cloudflare</li>
-<li>Once you login, you will have to add your domain name.</li>
-<li>It will scan your DNS settings, adds all the missing records if any (like for www etc)</li>
-<li>Now add a new CNAME as follows:
-<code>&lt;your sub-domain name&gt;</code> and its alias name, which is <code>&lt;github user&gt;.github.io</code> as shown below.</li>
-</ul>
-
-
-<p><img class="center" src="/images/cloudflare-dns_settings.jpg" width="650" height="350" title="image" alt="images"></p>
-
-<ul>
-<li>Once done, click on <em>I&rsquo;m done entering my DNS Records</em>.</li>
-<li>Now Cloudflare will provide you two nameservers (it could be different for different accounts)</li>
-</ul>
-
-
-<p>Now login to crazydomains,</p>
-
-<ul>
-<li>Click on Domains and click <em>Update Name Servers</em> under DNS settings.</li>
-<li>Delete the existing crazy domains name servers and enter the two nameservers given by cloudflare as follows:.</li>
-</ul>
-
-
-<p><img class="center" src="/images/crazydomain-dns_settings.jpg" width="650" height="350" title="image" alt="images"></p>
-
-<p>That&rsquo;s it. It may take an 10 &ndash; 20 minutes. Now you can go to your subdomain and see that its pulling content off your github page.</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/07/09/crazydomains-crazy-issues/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -312,125 +270,12 @@ echo 'your-domain.com' &gt;&gt; source/CNAME
 
 <blockquote><p><a href="http://octopress.org/">Octopress</a>  is a blogging framework for Jekyl, which isa static site generator powering Github Pages.</p></blockquote>
 
-<p>Writing blog using Octopress and hosting it in Github Pages, requires the following:</p>
-
-<ul>
-<li>Ruby 1.9.3</li>
-<li>Git &ndash; a distributed version control system</li>
-<li>Account in <a href="https://github.com">Github</a></li>
-</ul>
-
-
-<p>But having these environment in my local system was not an option, as I wanted to blog from anywhere. This is where Cloud9 helped me.</p>
-
-<blockquote><p><a href="http://c9.io/">Cloud9</a> is an online IDE where Ruby, Git are pre-installed.</p></blockquote>
-
-<p>So, once you sign up for an account with Cloud 9, all you need is to create an workspace. In free edition, you can have one private workspace.</p>
-
-<p>Now, go to your workspace, and follow the steps as outlined below in the terminal window</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git myblog</span></code></pre></td></tr></table></div></figure>
-
-
-<blockquote><p>This creates a directory called myblog and copies all the related data from octopress.</p></blockquote>
-
-<p>Now goto the octopress directory and issue the following commands</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd myblog
-</span><span class='line'>bundle install
-</span><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
-
-
-<blockquote><p>This will install the default theme. Check _config.yml and update all details like blog name, blog address, twitter id, disqus id etc</p></blockquote>
-
-<p>Next step is to generate the blog and preview it.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
-</span><span class='line'>rake preview</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Preview within Cloud9 may result in  Permission denied &ndash; bind(2) (Errno::EACCES). To resolve this issue, edit RakeFile and modify the following</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>....                                                                                                                                                                                 
-</span><span class='line'>....                                                                                                                                                                                 
-</span><span class='line'>
-</span><span class='line'>#server_port     = "4000"      # port for preview server eg. localhost:4000                                                                                                          
-</span><span class='line'>server_host     = ENV['IP'] ||= '0.0.0.0'     # server bind address for preview server                                                                                               
-</span><span class='line'>server_port     = ENV['PORT'] ||= "4000"      # port for preview server eg. localhost:4000                                                                                           
-</span><span class='line'>....                                                                                                                                                                                 
-</span><span class='line'>....                                                                                                                                                                                 
-</span><span class='line'>#rackupPid = Process.spawn("rackup --port #{server_port}")                                                                                                                           
-</span><span class='line'>rackupPid = Process.spawn("rackup --host #{server_host} --port #{server_port}")                                                                                                      </span></code></pre></td></tr></table></div></figure>
-
-
-<blockquote><p>Refer [<a href="http://www.devopsy.com/blog/2012/10/04/octopress-on-cloud9/">http://www.devopsy.com/blog/2012/10/04/octopress-on-cloud9/</a>] for more details</p></blockquote>
-
-<p>Now you can preview your blog on <code>&lt;blog_name&gt;.&lt;cloud 9 username&gt;.c9.io</code></p>
-
-<h3>Deploying to Github pages</h3>
-
-<p>Login to github.com and create a repo as <username>.github.io.
-Now on your cloud9 workspace, invoke</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd myblog
-</span><span class='line'>rake setup_github_pages</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Enter repo url as:<code>git@github.com:&lt;github username&gt;/&lt;github username&gt;.github.io</code></p>
-
-<blockquote><p>Note: Make sure to add cloud9 ssh key into github. Cloud9 ssh key is avilable at your account settings, copy this ssh key and add it in Github account settings.</p></blockquote>
-
-<h3>Now generate the blog and deploy to github</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
-</span><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you are done with deploying your blog onto Github and you can go to your blog at <code>http://&lt;github username&gt;.github.io</code>.</p>
-
-<h3>Commit the source</h3>
-
-<p>Now commit the source so that you don&rsquo;t loose any of the setup files and can checkout the code in someother system and start blogging.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git add .                                                                                                                                                                            
-</span><span class='line'>git commit -m 'your message'                                                                        
-</span><span class='line'>git push origin source                                                                                                                                                               </span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Creating new post</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_post["My new blog"]                                                                                                                                                         </span></code></pre></td></tr></table></div></figure>
-
-
-<p>This will generate a file in the source_posts folder which you can edit.</p>
-
-<p>To generate your blog and deploy it, follow the same steps as outlined above.</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/06/19/github-hosted-blog-with-octopress-in-cloud9/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -447,6 +292,10 @@ Now on your cloud9 workspace, invoke</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/">Pushing Local git Repositories to both Bitbucket and Github using EGit</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/07/16/configuring-tomcat-catalina-log-rotation/">Configuring Tomcat Catalina Log Rotation</a>
