@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: oracle | Chandrahasa]]></title>
+  <link href="http://blog.kchandrahasa.com/blog/categories/oracle/atom.xml" rel="self"/>
+  <link href="http://blog.kchandrahasa.com/"/>
+  <updated>2013-07-31T22:38:46-04:00</updated>
+  <id>http://blog.kchandrahasa.com/</id>
+  <author>
+    <name><![CDATA[Chandra]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Install Oracle Java jdk 7 on Ubuntu]]></title>
+    <link href="http://blog.kchandrahasa.com/blog/2013/07/31/install-oracle-java-jdk-7-on-ubuntu/"/>
+    <updated>2013-07-31T22:18:00-04:00</updated>
+    <id>http://blog.kchandrahasa.com/blog/2013/07/31/install-oracle-java-jdk-7-on-ubuntu</id>
+    <content type="html"><![CDATA[<p>Installing Oracle JDK in Ubuntu (12.04+)</p>
+
+<p>Ubuntu stopped hosting Oracle PPAs (Personal Package Archive) because of license issues, so now Oracle Java can&rsquo;t be installed from Ubuntu repositories. But, thanks to WebUpd8 team as they provide ubuntu PPAs from their repositories.</p>
+
+<!--more-->
+
+
+<ul>
+<li><p>Install Oracle JDK 7 by executing the following commands</p>
+
+<p>  <code>$ sudo add-apt-repository ppa:webupd8team/java</code></p>
+
+<blockquote><p>In case you get error message <strong>add-apt-repository: command not found</strong>, then install <strong>python-software-properties package</strong> as follows and <strong>re-execute</strong> the above command.
+  <code>$ sudo apt-get install python-software-properties</code></p></blockquote>
+
+<p>  <code>$ sudo apt-get update</code>  <br/>
+  <code>$ sudo apt-get install oracle-java7-installer</code></p>
+
+<blockquote><p>Note that, they do have Oracle Java 8 (<code>oracle-java8-installer</code>) and Oracle Java 6 (<code>oracle-java6-installer</code>)</p></blockquote></li>
+<li><p>Set the Oracle JDK as default (if already not set) by using the following command.
+  <code>$ sudo update-java-alternatives -s java-7-oracle</code></p></li>
+<li><p>Check the version<br/>
+  <code>$ java -version</code></p>
+
+<p>  You should see the following</p>
+
+<blockquote><p>java version &ldquo;1.7.0_25&rdquo;  <br/>
+Java&trade; SE Runtime Environment (build 1.7.0_25-b15) <br/>
+Java HotSpot&trade; 64-Bit Server VM (build 23.25-b01, mixed mode)</p></blockquote></li>
+<li><p>If you want to remove OpenJDK, then execute the following command on the terminal.
+<code>$ sudo apt-get purge openjdk*</code></p></li>
+</ul>
+
+
+<blockquote><p>Reference: <a href="http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html">Install Oracle Java in Ubuntu</a></p></blockquote>
+]]></content>
+  </entry>
+  
+</feed>

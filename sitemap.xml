@@ -23,15 +23,21 @@
         <lastmod>2013-07-24T06:34:37-04:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://blog.kchandrahasa.com/blog/2013/07/31/install-oracle-java-jdk-7-on-ubuntu/
+        </loc>
+        <lastmod>2013-07-31T22:37:59-04:00</lastmod>
+    </url>
+    <url>
         <loc>http://blog.kchandrahasa.com/robots.txt</loc>
         <lastmod>2013-06-18T07:56:56-04:00</lastmod>
     </url>
     <url>
         <loc>http://blog.kchandrahasa.com/</loc>
-        <lastmod>2013-07-24T06:34:37-04:00</lastmod>
+        <lastmod>2013-07-31T22:37:59-04:00</lastmod>
     </url>
     <url>
         <loc>http://blog.kchandrahasa.com/blog/archives/</loc>
-        <lastmod>2013-07-24T06:34:37-04:00</lastmod>
+        <lastmod>2013-07-31T22:37:59-04:00</lastmod>
     </url>
 </urlset>
