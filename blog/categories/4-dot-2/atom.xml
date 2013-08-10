@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 4.2 | Chandrahasa]]></title>
+  <link href="http://blog.kchandrahasa.com/blog/categories/4-dot-2/atom.xml" rel="self"/>
+  <link href="http://blog.kchandrahasa.com/"/>
+  <updated>2013-08-09T21:03:13-04:00</updated>
+  <id>http://blog.kchandrahasa.com/</id>
+  <author>
+    <name><![CDATA[Chandra]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Android 4.2 and javax.crypto.BadPaddingException: pad block corrupted]]></title>
+    <link href="http://blog.kchandrahasa.com/blog/2013/08/09/android-4-dot-2-and-javax-dot-crypto-dot-badpaddingexception-pad-block-corrupted/"/>
+    <updated>2013-08-09T20:01:00-04:00</updated>
+    <id>http://blog.kchandrahasa.com/blog/2013/08/09/android-4-dot-2-and-javax-dot-crypto-dot-badpaddingexception-pad-block-corrupted</id>
+    <content type="html"><![CDATA[<p>We have an Android app where user login using username/password to access the service. To make the app autologin, we have had the authentication details stored in preferences. And yes, we did store the password as encrypted and used <code>SharedPreference</code> with <code>MODE_PRIVATE</code> so that no other app can access the data and user with root access can&rsquo;t easily get the password.</p>
+
+<!--more-->
+
+
+<p>Things have been working fine until its broken in Android 4.2. On debugging, found that its basically having issue because the key supplied during decryption is different than the one supplied during encryption. How that&rsquo;s changed? Simple, Android updated their default implementation of SecureRandom from Crypto to OpenSSL(<a href="http://android-developers.blogspot.com.au/2013/02/security-enhancements-in-jelly-bean.html" target="_blank">Security Enhancements in Jelly Bean</a>).</p>
+
+<p>Its basically the following code having this issue:</p>
+
+<p>```java</p>
+
+<pre><code>    KeyGenerator kgen = KeyGenerator.getInstance("AES");
+    SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+    sr.setSeed(seed);
+    kgen.init(128, sr); 
+    SecretKey skey = kgen.generateKey();
+    byte[] raw = skey.getEncoded();
+</code></pre>
+
+<p><code>``
+The code above basically gets SecureRandom of</code>SHA1PRNG<code>algorithm. Now with the update to</code>OpenSSL<code>, this result it getting truly random values, which means generated keys are random each time its invoked. How can Android do this? It turns out that its not actually Android issue, but the code issue. We shouldn't have used</code>SecureRandom` to get key in the first place, which is plain wrong.</p>
+
+<p>How to resolve issue? If its need to done without major change, then the easy fix (<strong><em>but not recommended</em></strong>) would be as follows. Please note that this can be used as a temporary solution, though it resolves the issue, its still doing the wrong way.</p>
+
+<pre><code>    -SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+    +SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");
+</code></pre>
+
+<p>The recommended way (check <a href="http://nelenkov.blogspot.com.au/2012/04/using-password-based-encryption-on.html" target="_blank">Nelenkov&rsquo;s tutorial</a>) is to use proper key derivations PKCS (Public Key Cryptography Standard), which defines two key derivation functions, PBKDF1 and PBKDF2, of which PBKDF2 is more recommended.</p>
+
+<p>So, using this how do we get the key? Here is the code snippet
+```java</p>
+
+<pre><code>    int iterationCount = 1000;
+    int saltLength = 8; // bytes; 64 bits
+    int keyLength = 256;
+    SecureRandom random = new SecureRandom();
+    byte[] salt = new byte[saltLength];
+        random.nextBytes(salt);
+    KeySpec keySpec = new PBEKeySpec(seed.toCharArray(), salt,
+        iterationCount, keyLength);
+    SecretKeyFactory keyFactory = SecretKeyFactory
+        .getInstance("PBKDF2WithHmacSHA1");
+    byte[] raw = keyFactory.generateSecret(keySpec).getEncoded();
+</code></pre>
+
+<p>```</p>
+
+<h3>Final thoughts</h3>
+
+<p>Using the symmetric key function as above could be used for storing the encrypted data in the device, but its always better to go for <code>token</code>(<code>oauth</code>) based authentication which is more secure and can be controlled outside of the device without changing the password.</p>
+
+<h5>References</h5>
+
+<p><a href="http://android-developers.blogspot.com.au/2013/02/using-cryptography-to-store-credentials.html" target="_blank">Using Cryptography to Store Credentials Safely</a><br/>
+<a href="http://nelenkov.blogspot.com.au/2012/04/using-password-based-encryption-on.html" target="_blank">Nelenkov&rsquo;s tutorial</a><br/>
+<a href="http://stackoverflow.com/questions/13433529/android-4-2-broke-my-encrypt-decrypt-code-and-the-provided-solutions-dont-work/" target="_blank">Android 4.2 broke my encrypt/decrypt code</a></p>
+]]></content>
+  </entry>
+  
+</feed>

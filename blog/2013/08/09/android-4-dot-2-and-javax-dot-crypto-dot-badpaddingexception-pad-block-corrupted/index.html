@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Android 4.2 and javax.crypto.BadPaddingException: pad block corrupted - Chandrahasa</title>
+  <meta name="author" content="Chandra">
+
+  
+  <meta name="description" content="We have an Android app where user login using username/password to access the service. To make the app autologin, we have had the authentication &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.kchandrahasa.com/blog/2013/08/09/android-4-dot-2-and-javax-dot-crypto-dot-badpaddingexception-pad-block-corrupted/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Chandrahasa" type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42301455-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <!--
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">mob</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+   -->
+  <h1><a href="/">Chandrahasa</a></h1>
+  
+    <h2>  software development professional</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.kchandrahasa.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Android 4.2 and javax.crypto.BadPaddingException: Pad Block Corrupted</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-09T20:01:00-04:00" pubdate data-updated="true">Aug 9<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>We have an Android app where user login using username/password to access the service. To make the app autologin, we have had the authentication details stored in preferences. And yes, we did store the password as encrypted and used <code>SharedPreference</code> with <code>MODE_PRIVATE</code> so that no other app can access the data and user with root access can&rsquo;t easily get the password.</p>
+
+<!--more-->
+
+
+<p>Things have been working fine until its broken in Android 4.2. On debugging, found that its basically having issue because the key supplied during decryption is different than the one supplied during encryption. How that&rsquo;s changed? Simple, Android updated their default implementation of SecureRandom from Crypto to OpenSSL(<a href="http://android-developers.blogspot.com.au/2013/02/security-enhancements-in-jelly-bean.html" target="_blank">Security Enhancements in Jelly Bean</a>).</p>
+
+<p>Its basically the following code having this issue:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="n">KeyGenerator</span> <span class="n">kgen</span> <span class="o">=</span> <span class="n">KeyGenerator</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">&quot;AES&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">SecureRandom</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">SecureRandom</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">&quot;SHA1PRNG&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">sr</span><span class="o">.</span><span class="na">setSeed</span><span class="o">(</span><span class="n">seed</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">kgen</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="mi">128</span><span class="o">,</span> <span class="n">sr</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">SecretKey</span> <span class="n">skey</span> <span class="o">=</span> <span class="n">kgen</span><span class="o">.</span><span class="na">generateKey</span><span class="o">();</span>
+</span><span class='line'>  <span class="kt">byte</span><span class="o">[]</span> <span class="n">raw</span> <span class="o">=</span> <span class="n">skey</span><span class="o">.</span><span class="na">getEncoded</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The code above basically gets SecureRandom of <code>SHA1PRNG</code> algorithm. Now with the update to <code>OpenSSL</code>, this result it getting truly random values, which means generated keys are random each time its invoked. How can Android do this? It turns out that its not actually Android issue, but the code issue. We shouldn&rsquo;t have used <code>SecureRandom</code> to get key in the first place, which is plain wrong.</p>
+
+<p>How to resolve issue? If its need to done without major change, then the easy fix (<strong><em>but not recommended</em></strong>) would be as follows. Please note that this can be used as a temporary solution, though it resolves the issue, its still doing the wrong way.</p>
+
+<pre><code>    -SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+    +SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");
+</code></pre>
+
+<p>The recommended way (check <a href="http://nelenkov.blogspot.com.au/2012/04/using-password-based-encryption-on.html" target="_blank">Nelenkov&rsquo;s tutorial</a>) is to use proper key derivations PKCS (Public Key Cryptography Standard), which defines two key derivation functions, PBKDF1 and PBKDF2, of which PBKDF2 is more recommended.</p>
+
+<p>So, using this how do we get the key? Here is the code snippet</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kt">int</span> <span class="n">iterationCount</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">saltLength</span> <span class="o">=</span> <span class="mi">8</span><span class="o">;</span> <span class="c1">// bytes; 64 bits</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">256</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">SecureRandom</span> <span class="n">random</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SecureRandom</span><span class="o">();</span>
+</span><span class='line'>  <span class="kt">byte</span><span class="o">[]</span> <span class="n">salt</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">saltLength</span><span class="o">];</span>
+</span><span class='line'>      <span class="n">random</span><span class="o">.</span><span class="na">nextBytes</span><span class="o">(</span><span class="n">salt</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">KeySpec</span> <span class="n">keySpec</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PBEKeySpec</span><span class="o">(</span><span class="n">seed</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">(),</span> <span class="n">salt</span><span class="o">,</span>
+</span><span class='line'>      <span class="n">iterationCount</span><span class="o">,</span> <span class="n">keyLength</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">SecretKeyFactory</span> <span class="n">keyFactory</span> <span class="o">=</span> <span class="n">SecretKeyFactory</span>
+</span><span class='line'>      <span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">&quot;PBKDF2WithHmacSHA1&quot;</span><span class="o">);</span>
+</span><span class='line'>  <span class="kt">byte</span><span class="o">[]</span> <span class="n">raw</span> <span class="o">=</span> <span class="n">keyFactory</span><span class="o">.</span><span class="na">generateSecret</span><span class="o">(</span><span class="n">keySpec</span><span class="o">).</span><span class="na">getEncoded</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Final thoughts</h3>
+
+<p>Using the symmetric key function as above could be used for storing the encrypted data in the device, but its always better to go for <code>token</code>(<code>oauth</code>) based authentication which is more secure and can be controlled outside of the device without changing the password.</p>
+
+<h5>References</h5>
+
+<p><a href="http://android-developers.blogspot.com.au/2013/02/using-cryptography-to-store-credentials.html" target="_blank">Using Cryptography to Store Credentials Safely</a><br/>
+<a href="http://nelenkov.blogspot.com.au/2012/04/using-password-based-encryption-on.html" target="_blank">Nelenkov&rsquo;s tutorial</a><br/>
+<a href="http://stackoverflow.com/questions/13433529/android-4-2-broke-my-encrypt-decrypt-code-and-the-provided-solutions-dont-work/" target="_blank">Android 4.2 broke my encrypt/decrypt code</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Chandra</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-09T20:01:00-04:00" pubdate data-updated="true">Aug 9<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/4-dot-2/'>4.2</a>, <a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/exception/'>exception</a>, <a class='category' href='/blog/categories/openssl/'>openssl</a>, <a class='category' href='/blog/categories/padding/'>padding</a>, <a class='category' href='/blog/categories/security/'>security</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.kchandrahasa.com/blog/2013/08/09/android-4-dot-2-and-javax-dot-crypto-dot-badpaddingexception-pad-block-corrupted/" data-via="kchandrahasa" data-counturl="http://blog.kchandrahasa.com/blog/2013/08/09/android-4-dot-2-and-javax-dot-crypto-dot-badpaddingexception-pad-block-corrupted/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/2013/07/31/install-oracle-java-jdk-7-on-ubuntu/" title="Previous Post: Install Oracle Java jdk 7 on Ubuntu">&laquo; Install Oracle Java jdk 7 on Ubuntu</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/08/09/android-4-dot-2-and-javax-dot-crypto-dot-badpaddingexception-pad-block-corrupted/">Android 4.2 and javax.crypto.BadPaddingException: pad block corrupted</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/31/install-oracle-java-jdk-7-on-ubuntu/">Install Oracle Java jdk 7 on Ubuntu</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/24/pushing-local-git-repositories-to-both-bitbucket-and-github-using-egit/">Pushing Local git Repositories to both Bitbucket and Github using EGit</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/16/configuring-tomcat-catalina-log-rotation/">Configuring Tomcat Catalina Log Rotation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/09/crazydomains-crazy-issues/">Crazydomains - crazy issues</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/kchandrahasa">@kchandrahasa</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'kchandrahasa',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Chandra -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'kchandrahasa';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.kchandrahasa.com/blog/2013/08/09/android-4-dot-2-and-javax-dot-crypto-dot-badpaddingexception-pad-block-corrupted/';
+        var disqus_url = 'http://blog.kchandrahasa.com/blog/2013/08/09/android-4-dot-2-and-javax-dot-crypto-dot-badpaddingexception-pad-block-corrupted/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
